@@ -1,0 +1,63 @@
+<html>
+<head>
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/mini.css/3.0.1/mini-default.min.css">
+</head>
+<body>
+
+<?php 
+
+	if($apikey === 'insertBULKBETapikey'){
+		echo "<h3>You need to insert your Bulk.bet API Key on index.php</h3>";
+		die();
+	}
+?>
+
+<p>Bulk.bet Apikey Loaded: <?php echo $apikey; ?></p>
+<p>Balance ($): <?php echo file_get_contents('balance.txt') / 100; ?> <small>(Loaded from balance.txt - please note that balance and all modification is in cents, integer)</small></p>
+
+<p>Make sure callback points in <a href="https://cp.bulk.bet/panel">Bulk.bet Control Panel</a> on your API Key are pointed:</p>
+
+<?php 
+$protocol = isset($_SERVER["HTTPS"]) ? 'https://' : 'http://';
+$getFullUrl = $protocol.$_SERVER['HTTP_HOST'].$_SERVER['REQUEST_URI']; 
+
+echo "<p><small>Slots balance: ".$getFullUrl."callbackEndpoints/balance</small></p>";
+echo "<p><small>Slots bet: ".$getFullUrl."callbackEndpoints/bet</small></p>";
+echo "<p><small>Live casino balance: ".$getFullUrl."callbackEndpoints/balance</small></p>";
+echo "<p><small>Live casino bet: ".$getFullUrl."callbackEndpoints/bet</small></p>";
+
+?>
+
+<p>Check <a href="https://i.imgur.com/ANfPE1c.png" target="_blank">this screenshot</a> of how your casino configuration should be like.</p>
+
+
+<hr>
+
+<div class="row">
+ <?php
+ 	//Getting Games List from API
+ 	$url = "https://api.bulk.bet/v2/listGames?apikey=".$apikey."&image=1";
+	$result = file_get_contents($url);
+	$result = json_decode($result, true);
+
+	//Looping each Game from List
+	foreach($result as $game) {
+
+		//Parsing Game Info straight from the JSON on API
+		$thumbnailImage = $game['image_2'].'?w=337&h=181&fit=crop&q=97';
+		$gameId = $game['gameid'];
+		$gameName = $game['gamename'];
+		$gameProvider = $game['gameprovider'];
+		$gameType = $game['type'];
+		
+		//Displaying Game Info Parsed as HTML
+		echo "<div class='card'><img src=".$thumbnailImage.">";
+		echo "<p>".$gameName." by ".$gameProvider."</p>";
+		echo "<p><a href='playGame.php?game=$gameId&apikey=$apikey&userid=123456-usd&mode=real'>Create Real Money Session</a> - <a href='playGame.php?game=$gameId&apikey=$apikey&userid=123456-usd&mode=demo'>Create Demo Session (does not require balance callback)</a></p></div>";
+	}
+
+ ?>
+</div>
+</body>
+</html>
+
