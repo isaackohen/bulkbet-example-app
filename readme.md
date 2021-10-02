@@ -1,5 +1,5 @@
-[![Bulk.bet Snippet]!]
-** A php only full working example to utillize Bulk.bet's Game API to provide more insight and also a quick way to apply API.**
+## Bulk.bet Snippet
+A php only full working example to utillize Bulk.bet's Game API to provide more insight and also a quick way to apply API.
 
 ## Getting Started
 
