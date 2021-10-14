@@ -44,7 +44,7 @@ echo "<p><small>Live casino bet: ".$getFullUrl."callbackEndpoints/bet</small></p
 	foreach($result as $game) {
 
 		//Parsing Game Info straight from the JSON on API
-		$thumbnailImage = $game['image_2'].'?w=337&h=181&fit=crop&q=97';
+		$thumbnailImage = $game['default_image'].'?w=337&h=181&fit=crop&q=97';
 		$gameId = $game['gameid'];
 		$gameName = $game['gamename'];
 		$gameProvider = $game['gameprovider'];
